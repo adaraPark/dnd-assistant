@@ -8,7 +8,6 @@ export default async function Home() {
         <div className="text-3xl font-semibold">
           Welcome to the Dungeon and Dragons Assistant
         </div>
-        <div>Lets fight!</div>
         <Characters />
       </main>
     </HydrateClient>

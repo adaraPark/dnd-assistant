@@ -1,3 +1,6 @@
+import type { PrismaClient } from "@prisma/client";
+import { CharacterSchema } from "app/app/types";
+
 /**
  * Take in the base prisma client and return an extended client
  */
