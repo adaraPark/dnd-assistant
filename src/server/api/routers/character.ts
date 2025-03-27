@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "app/server/api/trpc";
+import { Character } from "app/app/types/character";
 
 export const characterRouter = createTRPCRouter({
   create: publicProcedure
@@ -20,5 +21,19 @@ export const characterRouter = createTRPCRouter({
     } catch (error) {
       throw new Error("Failed to fetch characters", { cause: error });
     }
+  }),
+
+  getHeroes: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.character.findMany({
+      where: {
+        type: Character.HERO,
+      },
+    });
+  }),
+
+  getMonsters: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.character.findMany({
+      where: { type: Character.MONSTER },
+    });
   }),
 });
