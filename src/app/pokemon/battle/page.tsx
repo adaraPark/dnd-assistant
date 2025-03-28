@@ -1,5 +1,6 @@
 "use client";
 
+import { ElementTypeDisplayNames } from "app/app/types";
 import { api } from "app/trpc/react";
 export default function BattlePage() {
   const { data: pokemonData, isLoading } = api.pokemon.getAll.useQuery();
@@ -14,7 +15,7 @@ export default function BattlePage() {
           <div key={pokemon.id} className="rounded-lg border p-4 shadow-sm">
             <h2 className="text-xl font-semibold">{pokemon.name}</h2>
             <p>Health: {pokemon.battleHp}</p>
-            <p>Type: {pokemon.type}</p>
+            <p>Type: {ElementTypeDisplayNames[pokemon.type]}</p>
             <p>
               Moves:{" "}
               {pokemon.moves

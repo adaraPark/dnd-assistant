@@ -10,7 +10,7 @@ import { AttackTypeSchema } from "app/app/types/attackType";
  * Take in the base prisma client and return an extended client
  */
 export const createClientExtensions = (client: PrismaClient) => {
-  client.$extends({
+  return client.$extends({
     result: {
       character: {
         type: {
@@ -50,5 +50,4 @@ export const createClientExtensions = (client: PrismaClient) => {
       },
     },
   });
-  return client;
 };

@@ -24,7 +24,6 @@ const createPrismaClient = () => {
             },
           ],
   });
-
   return createClientExtensions(client);
 };
 

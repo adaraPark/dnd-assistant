@@ -6,8 +6,8 @@ import { Geist } from "next/font/google";
 import { TRPCReactProvider } from "app/trpc/react";
 
 export const metadata: Metadata = {
-  title: "Dungeon and Dragons Assistant",
-  description: "A Dungeon and Dragons assistant",
+  title: "Pokemon Battle",
+  description: "Pokemon Battle",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
