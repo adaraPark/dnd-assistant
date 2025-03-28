@@ -20,7 +20,7 @@ model Character {
 
 model Pokemon {
     id             Int             @id @default(autoincrement())
-    name           String
+    name           String          @unique
     species        String
     type           String
     level          Int             @default(1)
@@ -47,12 +47,13 @@ model PokemonToMove {
     move      Move    @relation(fields: [moveId], references: [id])
     moveId    Int
 
+    @@unique([pokemonId, moveId])
     @@index([pokemonId, moveId])
 }
 
 model Move {
     id         Int             @id @default(autoincrement())
-    name       String
+    name       String          @unique
     power      Int
     accuracy   Int
     attackType String

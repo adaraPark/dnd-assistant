@@ -17,7 +17,15 @@ export const pokemonRouterRouter = createTRPCRouter({
 
   getAll: publicProcedure.query(async ({ ctx }) => {
     try {
-      return await ctx.db.pokemon.findMany();
+      return await ctx.db.pokemon.findMany({
+        include: {
+          moves: {
+            include: {
+              move: true,
+            },
+          },
+        },
+      });
     } catch (error) {
       throw new Error("Failed to fetch pokemon", { cause: error });
     }
