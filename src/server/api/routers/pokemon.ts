@@ -21,6 +21,13 @@ export const pokemonRouterRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return await ctx.db.pokemon.findUnique({
         where: { id: input.id },
+        include: {
+          moves: {
+            include: {
+              move: true,
+            },
+          },
+        },
       });
     }),
 

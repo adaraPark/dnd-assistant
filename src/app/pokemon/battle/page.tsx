@@ -1,52 +1,24 @@
 "use client";
 
-import { ElementTypeDisplayNames } from "app/app/types";
-import { api } from "app/trpc/react";
-import Image from "next/image";
-
+import { PokemonBattleView } from "app/app/components/battle/PokemonBattleView";
+import { redirect, useSearchParams } from "next/navigation";
 export default function BattlePage() {
-  const { data: pokemonData, isLoading } = api.pokemon.getAll.useQuery();
+  const searchParams = useSearchParams();
+  const pokemonId = searchParams.get("pokemonId");
+  const opponentId = searchParams.get("opponentId");
 
-  if (isLoading) return <div>Loading...</div>;
+  if (!pokemonId || !opponentId) {
+    redirect("/pokemon");
+  }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold">Pokemon Battle</h1>
-      <div className="text-gray text-lg">Choose your pokemon</div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {pokemonData?.map((pokemon) => (
-          <div
-            key={pokemon.id}
-            className="flex rounded-lg border p-4 shadow-sm"
-          >
-            <div>
-              <h2 className="text-xl font-semibold">{pokemon.name}</h2>
-              <p>Health: {pokemon.battleHp}</p>
-              <p>Type: {ElementTypeDisplayNames[pokemon.type]}</p>
-              <p>
-                Moves:{" "}
-                {pokemon.moves
-                  .map((moveRelation) => moveRelation.move.name)
-                  .join(", ")}
-              </p>
-              <p>Level: {pokemon.level}</p>
-              <p>battles won: {pokemon.battlesWon}</p>
-              <p>battles lost: {pokemon.battlesLost}</p>
-            </div>
-            {pokemon.imageUrl && (
-              <div className="flex items-center justify-center">
-                <Image
-                  src={pokemon.imageUrl ?? ""}
-                  alt={pokemon.name}
-                  width={100}
-                  height={100}
-                />
-              </div>
-            )}
-          </div>
-        ))}
+    <main className="flex h-full flex-col gap-4 bg-amber-100 p-4 md:flex-row">
+      <div className="flex-1">
+        <PokemonBattleView pokemonId={Number(pokemonId)} />
       </div>
-    </div>
+      <div className="flex-1">
+        <PokemonBattleView pokemonId={Number(opponentId)} />
+      </div>
+    </main>
   );
 }

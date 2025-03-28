@@ -21,11 +21,18 @@ export const moveRouterRouter = createTRPCRouter({
       });
     }),
 
-  getAll: publicProcedure.query(async ({ ctx }) => {
-    try {
-      return await ctx.db.move.findMany();
-    } catch (error) {
-      throw new Error("Failed to fetch moves", { cause: error });
-    }
-  }),
+  byPokemonId: publicProcedure
+    .input(z.object({ pokemonId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.move.findMany({
+        where: {
+          Pokemon: {
+            //todo lowercase
+            some: {
+              pokemonId: input.pokemonId,
+            },
+          },
+        },
+      });
+    }),
 });
