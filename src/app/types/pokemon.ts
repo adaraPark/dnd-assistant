@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { Species } from "./species";
+import { ElementType } from "./elementType";
 
 export type pokemonCreateRequest = z.infer<typeof pokemonCreateRequestSchema>;
 
@@ -6,8 +8,8 @@ export type pokemonUpdateRequest = z.infer<typeof pokemonUpdateRequestSchema>;
 
 export const pokemonCreateRequestSchema = z.object({
   name: z.string(),
-  species: z.string(), //enum
-  type: z.string(), //enum
+  species: z.nativeEnum(Species),
+  type: z.nativeEnum(ElementType),
   level: z.number(),
   baseHp: z.number(),
   battleHp: z.number(),

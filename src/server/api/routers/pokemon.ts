@@ -2,7 +2,7 @@ import { createTRPCRouter, publicProcedure } from "app/server/api/trpc";
 import {
   pokemonCreateRequestSchema,
   pokemonUpdateRequestSchema,
-} from "app/app/types/pokemon";
+} from "app/app/types";
 
 export const pokemonRouterRouter = createTRPCRouter({
   create: publicProcedure
