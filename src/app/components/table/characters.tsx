@@ -6,15 +6,15 @@ import { api } from "app/trpc/react";
 import { useState } from "react";
 import { CharacterCard } from "./characterCard";
 import DiceRoller from "../dnd-attack/diceRoller";
-// import { type Character } from "@prisma/client";
+import type { Character } from "@prisma/client";
 
 export const Characters = () => {
   //queries
   const { data: heroes } = api.character.getHeroes.useQuery();
   const { data: monsters } = api.character.getMonsters.useQuery();
   //state
-  const [heroId, setHeroId] = useState<number | null>(null);
-  const [monsterId, setMonsterId] = useState<number | null>(null);
+  const [hero, setHero] = useState<Character | null>(null);
+  const [monster, setMonster] = useState<Character | null>(null);
 
   if (!heroes || !monsters) return <div>Loading...</div>;
 
@@ -26,39 +26,31 @@ export const Characters = () => {
           <Combobox
             label="Select a Hero"
             data={heroes.map((character) => ({
-              id: character.id.toString(),
+              id: character.id,
               label: character.name,
             }))}
-            onSelect={(id) => {
-              setHeroId(Number(id));
+            onSelect={(val) => {
+              setHero(heroes.find((character) => character.id === val.id)!);
             }}
           />
-          {heroId && (
-            <CharacterCard
-              character={heroes.find((character) => character.id === heroId)!}
-            />
-          )}
+          {hero && <CharacterCard character={hero} />}
         </div>
-        {heroId && monsterId && <DiceRoller />}
+        {hero && monster && <DiceRoller players={[hero, monster]} />}
         <div className="flex flex-col gap-2">
           <Label>Choose your Monster</Label>
           <Combobox
             label="Select a Monster"
             data={monsters.map((character) => ({
-              id: character.id.toString(),
+              id: character.id,
               label: character.name,
             }))}
-            onSelect={(id) => {
-              setMonsterId(Number(id));
+            onSelect={(val) => {
+              setMonster(
+                monsters.find((character) => character.id === val.id)!,
+              );
             }}
           />
-          {monsterId && (
-            <CharacterCard
-              character={
-                monsters.find((character) => character.id === monsterId)!
-              }
-            />
-          )}
+          {monster && <CharacterCard character={monster} />}
         </div>
       </div>
     </>

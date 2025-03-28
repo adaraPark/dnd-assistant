@@ -6,10 +6,14 @@ import { CharacterSchema } from "app/app/types";
  */
 export const createClientExtensions = (client: PrismaClient) => {
   client.$extends({
-    character: {
-      needs: { type: true },
-      compute(data) {
-        return CharacterSchema.parse(data.type);
+    result: {
+      character: {
+        type: {
+          needs: { type: true },
+          compute(data) {
+            return CharacterSchema.parse(data.type);
+          },
+        },
       },
     },
   });

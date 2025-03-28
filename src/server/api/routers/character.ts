@@ -36,4 +36,15 @@ export const characterRouter = createTRPCRouter({
       where: { type: Character.MONSTER },
     });
   }),
+
+  update: publicProcedure
+    .input(z.object({ id: z.number(), health: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.character.update({
+        where: { id: input.id },
+        data: {
+          health: input.health,
+        },
+      });
+    }),
 });

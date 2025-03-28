@@ -20,7 +20,7 @@ import {
 } from "app/components/ui/popover";
 
 type ComboBoxItem = {
-  id: string;
+  id: number;
   label: string;
 };
 
@@ -31,7 +31,7 @@ export function Combobox({
 }: {
   data: ComboBoxItem[];
   label?: string;
-  onSelect: (id: string) => void;
+  onSelect: (val: ComboBoxItem) => void;
 }) {
   const [open, setOpen] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState<ComboBoxItem | null>(
@@ -62,10 +62,9 @@ export function Combobox({
               {data.map((item) => (
                 <CommandItem
                   key={item.id}
-                  id={item.id}
+                  id={item.label}
                   onSelect={() => {
-                    onSelect(item.id);
-                    console.log(item.id, "item.id");
+                    onSelect(item);
                     setSelectedItem(item);
                     setOpen(false);
                   }}
