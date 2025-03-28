@@ -1,5 +1,6 @@
-import { postRouter } from "app/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "app/server/api/trpc";
+import { characterRouter } from "./routers/character";
+import { pokemonRouterRouter } from "./routers/pokemon";
 
 /**
  * This is the primary router for your server.
@@ -7,17 +8,11 @@ import { createCallerFactory, createTRPCRouter } from "app/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
+  character: characterRouter,
+  pokemon: pokemonRouterRouter,
 });
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
 
-/**
- * Create a server-side caller for the tRPC API.
- * @example
- * const trpc = createCaller(createContext);
- * const res = await trpc.post.all();
- *       ^? Post[]
- */
 export const createCaller = createCallerFactory(appRouter);
