@@ -3,6 +3,7 @@ import {
   pokemonCreateRequestSchema,
   pokemonUpdateRequestSchema,
 } from "app/app/types";
+import { z } from "zod";
 
 export const pokemonRouterRouter = createTRPCRouter({
   create: publicProcedure
@@ -12,6 +13,14 @@ export const pokemonRouterRouter = createTRPCRouter({
         data: {
           ...input,
         },
+      });
+    }),
+
+  byId: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.pokemon.findUnique({
+        where: { id: input.id },
       });
     }),
 

@@ -1,5 +1,4 @@
 import { ElementType, Species } from "app/app/types";
-import { AttackType } from "app/app/types/attackType";
 import { db, type Prisma } from "app/server/db";
 import { PromisePool } from "@supercharge/promise-pool";
 
@@ -16,6 +15,8 @@ const pokemon: Prisma.PokemonCreateInput[] = [
     specialDefense: 50,
     speed: 90,
     level: 1,
+    imageUrl:
+      "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/025.png",
   },
   {
     name: "Charizard",
@@ -29,6 +30,8 @@ const pokemon: Prisma.PokemonCreateInput[] = [
     specialDefense: 85,
     speed: 100,
     level: 1,
+    imageUrl:
+      "https://assets.pokemon.com/assets/cms2/img/pokedex/full//006.png",
   },
   {
     name: "Blastoise",
@@ -42,6 +45,8 @@ const pokemon: Prisma.PokemonCreateInput[] = [
     specialDefense: 105,
     speed: 78,
     level: 1,
+    imageUrl:
+      "https://img.pokemondb.net/sprites/scarlet-violet/normal/blastoise.png",
   },
   {
     name: "Venusaur",
@@ -55,6 +60,8 @@ const pokemon: Prisma.PokemonCreateInput[] = [
     specialDefense: 100,
     speed: 80,
     level: 1,
+    imageUrl:
+      "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/detail/003.png",
   },
   {
     name: "Dragonite",
@@ -68,6 +75,8 @@ const pokemon: Prisma.PokemonCreateInput[] = [
     specialDefense: 100,
     speed: 80,
     level: 1,
+    imageUrl:
+      "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/149.png",
   },
   {
     name: "Gengar",
@@ -81,6 +90,7 @@ const pokemon: Prisma.PokemonCreateInput[] = [
     specialDefense: 75,
     speed: 110,
     level: 1,
+    imageUrl: "https://img.pokemondb.net/sprites/sun-moon/normal/gengar.png",
   },
   {
     name: "Alakazam",
@@ -94,6 +104,8 @@ const pokemon: Prisma.PokemonCreateInput[] = [
     specialDefense: 95,
     speed: 120,
     level: 1,
+    imageUrl:
+      "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/065.png",
   },
   {
     name: "Snorlax",
@@ -107,6 +119,8 @@ const pokemon: Prisma.PokemonCreateInput[] = [
     specialDefense: 110,
     speed: 30,
     level: 1,
+    imageUrl:
+      "https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/detail/143.png",
   },
   {
     name: "Tyranitar",
@@ -120,6 +134,8 @@ const pokemon: Prisma.PokemonCreateInput[] = [
     specialDefense: 100,
     speed: 61,
     level: 1,
+    imageUrl:
+      "https://assets.pokemon.com/assets/cms2/img/pokedex/full//248.png",
   },
   {
     name: "Machamp",
@@ -133,6 +149,8 @@ const pokemon: Prisma.PokemonCreateInput[] = [
     specialDefense: 85,
     speed: 55,
     level: 1,
+    imageUrl:
+      "https://assets.pokemon.com/assets/cms2/img/pokedex/full//068.png",
   },
 ];
 

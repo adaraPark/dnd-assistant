@@ -1,5 +1,6 @@
 import { createTRPCRouter, publicProcedure } from "app/server/api/trpc";
 import { moveCreateRequestSchema } from "app/app/types";
+import { z } from "zod";
 
 export const moveRouterRouter = createTRPCRouter({
   create: publicProcedure
@@ -9,6 +10,14 @@ export const moveRouterRouter = createTRPCRouter({
         data: {
           ...input,
         },
+      });
+    }),
+
+  byId: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.move.findUnique({
+        where: { id: input.id },
       });
     }),
 
