@@ -1,9 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
-import {
-  CharacterSchema,
-  ElementTypeSchema,
-  SpeciesSchema,
-} from "app/app/types";
+import { ElementTypeSchema, SpeciesSchema } from "app/app/types";
 import { AttackTypeSchema } from "app/app/types/attackType";
 
 /**
@@ -12,14 +8,6 @@ import { AttackTypeSchema } from "app/app/types/attackType";
 export const createClientExtensions = (client: PrismaClient) => {
   return client.$extends({
     result: {
-      character: {
-        type: {
-          needs: { type: true },
-          compute(data) {
-            return CharacterSchema.parse(data.type);
-          },
-        },
-      },
       pokemon: {
         type: {
           needs: { type: true },

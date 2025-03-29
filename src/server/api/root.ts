@@ -1,5 +1,4 @@
 import { createCallerFactory, createTRPCRouter } from "app/server/api/trpc";
-import { characterRouter } from "./routers/character";
 import { pokemonRouterRouter } from "./routers/pokemon";
 import type { inferRouterOutputs } from "@trpc/server";
 import { moveRouterRouter } from "./routers/move";
@@ -10,7 +9,6 @@ import { moveRouterRouter } from "./routers/move";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  character: characterRouter,
   pokemon: pokemonRouterRouter,
   move: moveRouterRouter,
 });
