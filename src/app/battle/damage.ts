@@ -1,10 +1,15 @@
+import { AttackType } from "../types/attackType";
 import { typeEffectivenessMultiplier } from "./typeEffectivenessMultiplier";
 import type { RouterOutputs } from "app/server/api";
 
 /**
- * The minimum damage a move will always at least do
+ * constants for damage calculations
  */
 const MIN_DAMAGE = 2;
+const DAMAGE_REDUCTION = 50;
+const LEVEL_MULTIPLIER = 2;
+const LEVEL_REDUCTION = 5;
+const MIN_LEVEL_ADDITION = 2;
 
 type pokemonType = NonNullable<RouterOutputs["pokemon"]["byId"]>;
 type moveType = NonNullable<RouterOutputs["move"]["byId"]>;
@@ -25,19 +30,80 @@ export const calculateDamage = ({
   defender: pokemonType;
   moveUsed: moveType;
 }) => {
-  //base level calculations
-  const levelImpact = (2 * attacker.level) / 5 + 2;
-  const powerImpact = levelImpact * moveUsed.power * attacker.attack;
-  const defenseImpact = powerImpact / defender.defense;
+  // if pokemon misses, return minimum damage
+  if (!accuracyCheck(moveUsed.accuracy)) {
+    return MIN_DAMAGE;
+  }
 
-  const baseDamage = defenseImpact / 50;
+  // determine if the move is a special or physical attack
+  const isSpecialMove = moveUsed.attackType === AttackType.SPECIAL;
+  const attackStat = isSpecialMove ? attacker.specialAttack : attacker.attack;
+  const defenseStat = isSpecialMove
+    ? defender.specialDefense
+    : defender.defense;
+
+  //base level calculations
+  const levelImpact =
+    (LEVEL_MULTIPLIER * attacker.level) / LEVEL_REDUCTION + MIN_LEVEL_ADDITION;
+  const powerImpact = levelImpact * moveUsed.power * attackStat;
+  const defenseImpact = powerImpact / defenseStat;
+
+  const baseDamage = defenseImpact / DAMAGE_REDUCTION;
 
   //multiplier calculations
-  const typeMultiplier =
-    typeEffectivenessMultiplier[moveUsed.type][defender.type] ??
-    typeEffectivenessMultiplier[moveUsed.type].defaultImpact;
+  const randomMultiplier = getRandomMultiplier();
+  const typeMultiplier = getTypeEffectivenessMultiplier(
+    moveUsed.type,
+    defender.type,
+  );
 
-  const totalDamage = Math.floor(baseDamage * typeMultiplier);
+  const totalDamage = Math.floor(
+    baseDamage * typeMultiplier * randomMultiplier,
+  );
 
   return Math.max(totalDamage, MIN_DAMAGE);
+};
+
+/*
+/*
+ * Check if the move is going to hit and cause damage based on move accuracy
+ * @returns True if the move hits, false otherwise
+
+ */
+const accuracyCheck = (accuracy: moveType["accuracy"]) => {
+  const randomChance = Math.random() * 100;
+
+  if (randomChance < accuracy) {
+    return true;
+  }
+
+  return false;
+};
+
+/**
+ * Get a random multiplier for the damage
+ * @returns A random multiplier between 0.85 and 1.15
+ */
+const getRandomMultiplier = () => {
+  const random = Math.random() * 20;
+  if (random < 3) {
+    return 0.85;
+  } else if (random > 17) {
+    return 1.15;
+  }
+  return 1;
+};
+
+/**
+ * Get the type effectiveness multiplier for a move
+ * @returns The type effectiveness multiplier
+ */
+const getTypeEffectivenessMultiplier = (
+  moveType: moveType["type"],
+  defenderType: pokemonType["type"],
+) => {
+  return (
+    typeEffectivenessMultiplier[moveType][defenderType] ??
+    typeEffectivenessMultiplier[moveType].defaultImpact
+  );
 };

@@ -1,7 +1,6 @@
 import { ElementTypeDisplayNames } from "app/app/types";
 import { AttackTypeDisplayNames } from "app/app/types/attackType";
 import { PokemonTooltip } from "app/components/pokemonTooltip";
-import { Button } from "app/components/ui/button";
 import { api, type RouterOutputs } from "app/trpc/react";
 
 type Move = NonNullable<RouterOutputs["move"]["byPokemonId"]>[number];
@@ -41,19 +40,23 @@ export const ActionBar = ({
                 label: move.name,
               }}
             >
-              <div className="flex flex-col gap-2">
-                <div className="text-sm font-bold">{move.name} Stats</div>
-                <div>Power: {move.power}</div>
-                <div>Accuracy: {move.accuracy}</div>
-                <div>Type: {ElementTypeDisplayNames[move.type]}</div>
-                <div>
-                  Attack type: {AttackTypeDisplayNames[move.attackType]}
-                </div>
-              </div>
+              <MoveStats move={move} />
             </PokemonTooltip>
           </div>
         ))}
       </div>
+    </div>
+  );
+};
+
+const MoveStats = ({ move }: { move: Move }) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="text-sm font-bold">{move.name} Stats</div>
+      <div>Power: {move.power}</div>
+      <div>Accuracy: {move.accuracy}</div>
+      <div>Type: {ElementTypeDisplayNames[move.type]}</div>
+      <div>Attack type: {AttackTypeDisplayNames[move.attackType]}</div>
     </div>
   );
 };
