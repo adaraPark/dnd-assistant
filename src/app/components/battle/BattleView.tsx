@@ -6,7 +6,7 @@ import React from "react";
 import { ActionBar } from "./ActionBar";
 import { calculateDamage } from "app/app/battle/damage";
 import useBattle from "app/app/hooks/useBattle";
-import { api, type RouterOutputs } from "app/trpc/react";
+import { type RouterOutputs } from "app/trpc/react";
 import Modal from "app/components/modal";
 import { useUpdatePokemon } from "app/app/hooks/usePokemon";
 
@@ -46,11 +46,6 @@ export const BattleView = ({
     } else {
       cpuMove(damage);
     }
-
-    if (state.isGameOver) {
-      console.log("game over");
-      setOpenModal(true);
-    }
   };
 
   //   //todo change how this works
@@ -83,9 +78,11 @@ export const BattleView = ({
   }, [state.isGameOver, state.playerCp, state.opponentCp]);
 
   return (
-    <div className="flex h-full flex-col gap-4 bg-amber-100 p-4 md:flex-row">
+    <div className="flex flex-col gap-4 p-4 md:h-screen md:flex-row">
       <div className="flex flex-1 flex-col gap-4">
-        <PokemonBattleView pokemon={pokemon} battleCp={state.playerCp} />
+        <div className="flex flex-grow">
+          <PokemonBattleView pokemon={pokemon} battleHp={state.playerCp} />
+        </div>
         <ActionBar
           pokemonId={pokemon.id}
           attack={attack}
@@ -93,7 +90,9 @@ export const BattleView = ({
         />
       </div>
       <div className="flex flex-1 flex-col gap-4">
-        <PokemonBattleView pokemon={opponent} battleCp={state.opponentCp} />
+        <div className="flex flex-grow">
+          <PokemonBattleView pokemon={opponent} battleHp={state.opponentCp} />
+        </div>
         <ActionBar
           pokemonId={opponent.id}
           attack={attack}
@@ -118,8 +117,12 @@ export const BattleView = ({
         }}
       >
         <div>
-          Game Over!{" "}
-          {state.playerCp > state.opponentCp ? "You win" : "You lose"}
+          <p className="mb-4 font-semibold text-gray-700">
+            Game over!{" "}
+            {state.playerCp > state.opponentCp
+              ? `You beat ${opponent.name}!`
+              : `You lost to ${opponent.name}!`}
+          </p>
         </div>
       </Modal>
     </div>

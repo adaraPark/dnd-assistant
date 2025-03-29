@@ -25,5 +25,9 @@ export default function BattlePage() {
     return <div>Loading...</div>;
   }
 
-  return <BattleView pokemon={pokemon} opponent={opponent} />;
+  return (
+    <div className="bg-amber-100">
+      <BattleView pokemon={pokemon} opponent={opponent} />
+    </div>
+  );
 }
