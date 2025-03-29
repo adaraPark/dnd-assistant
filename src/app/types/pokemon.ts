@@ -19,6 +19,8 @@ export const pokemonCreateRequestSchema = z.object({
   specialDefense: z.number(),
   speed: z.number(),
   imageUrl: z.string().url(),
+  battlesWon: z.number().optional(),
+  battlesLost: z.number().optional(),
 });
 
 export const pokemonUpdateRequestSchema = pokemonCreateRequestSchema

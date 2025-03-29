@@ -28,16 +28,16 @@ export const calculateDamage = ({
   //base level calculations
   const levelImpact = (2 * attacker.level) / 5 + 2;
   const powerImpact = levelImpact * moveUsed.power * attacker.attack;
-  const defenseImpact = defender.defense / 50;
+  const defenseImpact = powerImpact / defender.defense;
 
-  const baseDamage = powerImpact / defenseImpact;
+  const baseDamage = defenseImpact / 50;
 
   //multiplier calculations
   const typeMultiplier =
     typeEffectivenessMultiplier[moveUsed.type][defender.type] ??
     typeEffectivenessMultiplier[moveUsed.type].defaultImpact;
 
-  const totalDamage = baseDamage * typeMultiplier;
+  const totalDamage = Math.floor(baseDamage * typeMultiplier);
 
   return Math.max(totalDamage, MIN_DAMAGE);
 };
