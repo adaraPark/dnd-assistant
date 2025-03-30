@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { PokemonBattleView } from "app/app/components/battle/PokemonBattleView";
 import { redirect } from "next/navigation";
 import React from "react";
-import { ActionBar } from "./ActionBar";
 import { calculateDamage } from "app/app/battle/damage";
 import useBattle from "app/app/hooks/useBattle";
 import { type RouterOutputs } from "app/trpc/react";
@@ -24,13 +23,13 @@ export const BattleView = ({
   const { state, playerMove, cpuMove, resetGame } = useBattle({
     initialPlayerCp: pokemon.baseHp,
     initialOpponentCp: opponent.baseHp,
+    isPlayersTurn: pokemon.speed >= opponent.speed,
   });
   const [damage, setDamage] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   //mutations
   const updatePokemon = useUpdatePokemon();
 
-  //todo clean this up make sure its straight forward
   const attack = (chosenMove: Move) => {
     const attacker = state.isPlayersTurn ? pokemon : opponent;
     const defender = state.isPlayersTurn ? opponent : pokemon;
@@ -49,7 +48,8 @@ export const BattleView = ({
     }
   };
 
-  //   //todo change how this works
+  //todo change how this works
+  //could move some of this to a service
   useEffect(() => {
     if (state.isGameOver) {
       setOpenModal(true);
@@ -81,25 +81,22 @@ export const BattleView = ({
   return (
     <div className="flex flex-col gap-4 p-4 md:h-screen md:flex-row">
       <div className="flex flex-1 flex-col gap-4">
-        <div className="flex flex-grow">
-          <PokemonBattleView pokemon={pokemon} battleHp={state.playerCp} />
-        </div>
-        {!state.isPlayersTurn && <div> Damage given to opponent: {damage}</div>}
-        <ActionBar
-          pokemonId={pokemon.id}
-          attack={attack}
+        <PokemonBattleView
+          pokemon={pokemon}
+          battleHp={state.playerCp}
           isPlayersTurn={state.isPlayersTurn}
+          damage={damage}
+          attack={attack}
         />
       </div>
       <div className="flex flex-1 flex-col gap-4">
-        <div className="flex flex-grow">
-          <PokemonBattleView pokemon={opponent} battleHp={state.opponentCp} />
-        </div>
-        {state.isPlayersTurn && <div> Damage given to player: {damage}</div>}
-        <ActionBar
-          pokemonId={opponent.id}
+        <PokemonBattleView
+          pokemon={opponent}
+          battleHp={state.opponentCp}
+          isPlayersTurn={!state.isPlayersTurn && !state.isGameOver}
+          damage={damage}
           attack={attack}
-          isPlayersTurn={!state.isPlayersTurn}
+          isCpu={true}
         />
       </div>
       <Modal

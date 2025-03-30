@@ -8,7 +8,7 @@ export const PokemonCard = ({ pokemon }: { pokemon: pokemon }) => {
   return (
     <div
       key={pokemon.id}
-      className="flex items-center space-x-8 rounded-lg border bg-white p-4 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg"
+      className="flex items-center space-x-8 overflow-x-hidden rounded-lg border bg-white p-4 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg"
     >
       <div className="flex flex-col items-center justify-center space-y-4">
         <Image
@@ -21,16 +21,19 @@ export const PokemonCard = ({ pokemon }: { pokemon: pokemon }) => {
         <h2 className="text-2xl font-semibold text-gray-800">{pokemon.name}</h2>
       </div>
 
-      <div className="text-gray-600">
+      <div className="w-fit text-gray-600">
         <div className="text-xl font-semibold text-gray-800">Stats</div>
         <PokemonLineItem
           label="Type"
           value={ElementTypeDisplayNames[pokemon.type]}
         />
         <PokemonLineItem label="Health" value={pokemon.baseHp} />
-        <PokemonLineItem label="Attack" value={pokemon.attack} />
-        <PokemonLineItem label="Defense" value={pokemon.defense} />
+        <PokemonLineItem label="Speed" value={pokemon.speed} />
         <PokemonLineItem label="Level" value={pokemon.level} />
+        <PokemonLineItem label="Physical Att." value={pokemon.attack} />
+        <PokemonLineItem label="Physical Def." value={pokemon.defense} />
+        <PokemonLineItem label="Special Att." value={pokemon.specialAttack} />
+        <PokemonLineItem label="Special Def." value={pokemon.specialDefense} />
         <PokemonLineItem label="Battles Won" value={pokemon.battlesWon} />
       </div>
     </div>
@@ -47,7 +50,7 @@ const PokemonLineItem = ({
   return (
     <div className="flex gap-2 text-sm">
       <div className="w-24 font-semibold">{label}</div>
-      <div className="">{value}</div>
+      <div className="truncate">{value}</div>
     </div>
   );
 };

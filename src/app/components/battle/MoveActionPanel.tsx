@@ -1,41 +1,57 @@
+import { cpuAttack } from "app/app/battle/cpuAttack";
 import { ElementTypeDisplayNames } from "app/app/types";
 import { AttackTypeDisplayNames } from "app/app/types/attackType";
 import { PokemonTooltip } from "app/components/pokemonTooltip";
-import { api, type RouterOutputs } from "app/trpc/react";
+import { type RouterOutputs } from "app/trpc/react";
+import { useEffect } from "react";
 
 type Move = NonNullable<RouterOutputs["move"]["byPokemonId"]>[number];
+type Pokemon = NonNullable<RouterOutputs["pokemon"]["byId"]>;
 
-export const ActionBar = ({
-  pokemonId,
+export const MoveActionPanel = ({
+  pokemon,
   attack,
   isPlayersTurn,
+  isCpu = false,
 }: {
-  pokemonId: number;
+  pokemon: Pokemon;
   attack: (move: Move) => void;
   isPlayersTurn: boolean;
+  isCpu?: boolean;
 }) => {
-  const { data: moves } = api.move.byPokemonId.useQuery({ pokemonId });
+  useEffect(() => {
+    if (isPlayersTurn && isCpu) {
+      const timeoutId = setTimeout(() => {
+        const cpuMove = cpuAttack(pokemon);
+        if (cpuMove) {
+          attack(cpuMove);
+        }
+      }, 1000);
 
-  //if cpu, randomly select a move
-  const randomMove = moves?.[Math.floor(Math.random() * moves.length)];
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isPlayersTurn, isCpu, attack, pokemon]);
+
+  const attackDisplay = isCpu ? "CPU is attacking..." : "Make your move";
 
   return (
     <div className="flex h-[100px] w-full flex-col gap-2 overflow-y-auto rounded-lg border border-gray-300 bg-white p-2 shadow-md">
       {isPlayersTurn ? (
         <div className="flex justify-center text-lg font-bold">
-          Make your move
+          {attackDisplay}
         </div>
       ) : (
         <div className="flex justify-center text-lg font-bold">
           Waiting for opponent...
         </div>
       )}
+
       <div className="flex flex-row flex-wrap items-center justify-center gap-2">
-        {moves?.map((move) => (
+        {pokemon.moves.map(({ move }) => (
           <div className="flex flex-col gap-2" key={move.id}>
             <PokemonTooltip
               buttonProps={{
-                disabled: !isPlayersTurn,
+                disabled: !isPlayersTurn || isCpu,
                 variant: "outline",
                 onClick: () => {
                   attack(move);

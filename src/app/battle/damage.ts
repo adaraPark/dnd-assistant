@@ -32,7 +32,7 @@ export const calculateDamage = ({
 }) => {
   // if pokemon misses, return minimum damage
   if (!accuracyHitCheck(moveUsed.accuracy)) {
-    return 0;
+    return MIN_DAMAGE;
   }
 
   // determine if the move is a special or physical attack

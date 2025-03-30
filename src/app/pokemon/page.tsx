@@ -1,5 +1,5 @@
 import { HydrateClient } from "app/trpc/server";
-import PokemonTable from "../components/battle/PokemonTable";
+import PokemonTable from "../components/PokemonTable";
 
 export default async function Home() {
   return (

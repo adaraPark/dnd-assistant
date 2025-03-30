@@ -47,14 +47,16 @@ const gameReducer = (state: State, action: Action): State => {
 type UseTurnBasedGameArgs = {
   initialPlayerCp: number;
   initialOpponentCp: number;
+  isPlayersTurn: boolean;
 };
 
 const useBattle = ({
   initialPlayerCp,
   initialOpponentCp,
+  isPlayersTurn,
 }: UseTurnBasedGameArgs) => {
   const initialState: State = {
-    isPlayersTurn: true,
+    isPlayersTurn,
     playerCp: initialPlayerCp,
     opponentCp: initialOpponentCp,
     isGameOver: false,
