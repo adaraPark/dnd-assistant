@@ -9,9 +9,10 @@ export default function PokemonTable() {
 
   if (isLoading || !pokemonData) return <div>Loading...</div>;
 
-  //todo opponent logic dont want to have same pokemon ever todo
-  const randomIndex = Math.floor(Math.random() * pokemonData.length);
-  const opponent = pokemonData[randomIndex];
+  const getRandomOpponent = () => {
+    const randomIndex = Math.floor(Math.random() * pokemonData.length);
+    return pokemonData[randomIndex]?.id;
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -21,7 +22,7 @@ export default function PokemonTable() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {pokemonData?.map((pokemon) => (
           <Link
-            href={`/pokemon/battle?pokemonId=${pokemon.id}&opponentId=${opponent?.id}`}
+            href={`/pokemon/battle?pokemonId=${pokemon.id}&opponentId=${getRandomOpponent()}`}
             key={pokemon.id}
           >
             <PokemonCard key={pokemon.id} pokemon={pokemon} />

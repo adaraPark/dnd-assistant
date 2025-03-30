@@ -16,6 +16,9 @@ export const ActionBar = ({
 }) => {
   const { data: moves } = api.move.byPokemonId.useQuery({ pokemonId });
 
+  //if cpu, randomly select a move
+  const randomMove = moves?.[Math.floor(Math.random() * moves.length)];
+
   return (
     <div className="flex h-[100px] w-full flex-col gap-2 overflow-y-auto rounded-lg border border-gray-300 bg-white p-2 shadow-md">
       {isPlayersTurn ? (

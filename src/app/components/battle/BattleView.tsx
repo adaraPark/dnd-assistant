@@ -25,6 +25,7 @@ export const BattleView = ({
     initialPlayerCp: pokemon.baseHp,
     initialOpponentCp: opponent.baseHp,
   });
+  const [damage, setDamage] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   //mutations
   const updatePokemon = useUpdatePokemon();
@@ -39,7 +40,7 @@ export const BattleView = ({
       defender,
       moveUsed: chosenMove,
     });
-    console.log("damage", damage);
+    setDamage(damage);
 
     if (state.isPlayersTurn) {
       playerMove(damage);
@@ -83,6 +84,7 @@ export const BattleView = ({
         <div className="flex flex-grow">
           <PokemonBattleView pokemon={pokemon} battleHp={state.playerCp} />
         </div>
+        {!state.isPlayersTurn && <div> Damage given to opponent: {damage}</div>}
         <ActionBar
           pokemonId={pokemon.id}
           attack={attack}
@@ -93,6 +95,7 @@ export const BattleView = ({
         <div className="flex flex-grow">
           <PokemonBattleView pokemon={opponent} battleHp={state.opponentCp} />
         </div>
+        {state.isPlayersTurn && <div> Damage given to player: {damage}</div>}
         <ActionBar
           pokemonId={opponent.id}
           attack={attack}

@@ -31,8 +31,8 @@ export const calculateDamage = ({
   moveUsed: moveType;
 }) => {
   // if pokemon misses, return minimum damage
-  if (!accuracyCheck(moveUsed.accuracy)) {
-    return MIN_DAMAGE;
+  if (!accuracyHitCheck(moveUsed.accuracy)) {
+    return 0;
   }
 
   // determine if the move is a special or physical attack
@@ -70,7 +70,7 @@ export const calculateDamage = ({
  * @returns True if the move hits, false otherwise
 
  */
-const accuracyCheck = (accuracy: moveType["accuracy"]) => {
+const accuracyHitCheck = (accuracy: moveType["accuracy"]) => {
   const randomChance = Math.random() * 100;
 
   if (randomChance < accuracy) {
@@ -82,14 +82,14 @@ const accuracyCheck = (accuracy: moveType["accuracy"]) => {
 
 /**
  * Get a random multiplier for the damage
- * @returns A random multiplier between 0.85 and 1.15
+ * @returns A random multiplier between 0.85 and 1.5
  */
 const getRandomMultiplier = () => {
   const random = Math.random() * 20;
   if (random < 3) {
     return 0.85;
   } else if (random > 17) {
-    return 1.15;
+    return 1.5;
   }
   return 1;
 };

@@ -27,7 +27,6 @@ export const moveRouterRouter = createTRPCRouter({
       return await ctx.db.move.findMany({
         where: {
           Pokemon: {
-            //todo lowercase
             some: {
               pokemonId: input.pokemonId,
             },
