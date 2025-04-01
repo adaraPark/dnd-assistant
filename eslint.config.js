@@ -18,7 +18,6 @@ export default tseslint.config(
       ...tseslint.configs.stylisticTypeChecked,
     ],
     rules: {
-      //todo for now
       "@typescript-eslint/no-unsafe-call": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",

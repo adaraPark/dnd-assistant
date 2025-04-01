@@ -2,11 +2,11 @@
 
 import { createMoves } from "./src/createMoves";
 import { createPokemon } from "./src/createPokemon";
-
+import { createPokemonMoves } from "./src/createPokemon";
 export async function main() {
-  console.log("Hello, world!");
   await createMoves();
   await createPokemon();
+  await createPokemonMoves();
 }
 
 // Add this line at the end of the file

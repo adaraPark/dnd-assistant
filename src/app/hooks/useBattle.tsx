@@ -81,7 +81,12 @@ const useBattle = ({
     });
   }, []);
 
-  return { state, playerMove, cpuMove, resetGame };
+  return {
+    state,
+    playerMove,
+    cpuMove,
+    resetGame,
+  };
 };
 
 export default useBattle;

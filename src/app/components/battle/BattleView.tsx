@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { PokemonBattleView } from "app/app/components/battle/PokemonBattleView";
 import { redirect } from "next/navigation";
@@ -30,7 +30,7 @@ export const BattleView = ({
   //mutations
   const updatePokemon = useUpdatePokemon();
 
-  const attack = (chosenMove: Move) => {
+  const attack = async (chosenMove: Move) => {
     const attacker = state.isPlayersTurn ? pokemon : opponent;
     const defender = state.isPlayersTurn ? opponent : pokemon;
 
@@ -43,40 +43,35 @@ export const BattleView = ({
 
     if (state.isPlayersTurn) {
       playerMove(damage);
+      if (state.opponentCp - damage <= 0) {
+        setOpenModal(true);
+        await updatePokemonStats({ playerWins: true });
+      }
     } else {
       cpuMove(damage);
+      if (state.playerCp - damage <= 0) {
+        setOpenModal(true);
+        await updatePokemonStats({ playerWins: false });
+      }
     }
   };
 
-  //todo change how this works
-  //could move some of this to a service
-  useEffect(() => {
-    if (state.isGameOver) {
-      setOpenModal(true);
-
-      const playerWins = state.playerCp >= state.opponentCp;
-
-      if (playerWins) {
-        updatePokemon.mutate({
-          id: pokemon.id,
-          battlesWon: pokemon.battlesWon + 1,
-        });
-        updatePokemon.mutate({
-          id: opponent.id,
-          battlesLost: opponent.battlesLost + 1,
-        });
-      } else {
-        updatePokemon.mutate({
-          id: pokemon.id,
-          battlesLost: pokemon.battlesLost + 1,
-        });
-        updatePokemon.mutate({
-          id: opponent.id,
-          battlesWon: opponent.battlesWon + 1,
-        });
-      }
-    }
-  }, [state.isGameOver, state.playerCp, state.opponentCp]);
+  const updatePokemonStats = async ({
+    playerWins,
+  }: {
+    playerWins: boolean;
+  }) => {
+    await updatePokemon.mutateAsync({
+      id: pokemon.id,
+      battlesWon: playerWins ? pokemon.battlesWon + 1 : pokemon.battlesWon,
+      battlesLost: playerWins ? pokemon.battlesLost : pokemon.battlesLost + 1,
+    });
+    await updatePokemon.mutateAsync({
+      id: opponent.id,
+      battlesLost: playerWins ? opponent.battlesLost + 1 : opponent.battlesLost,
+      battlesWon: playerWins ? opponent.battlesWon : opponent.battlesWon + 1,
+    });
+  };
 
   return (
     <div className="flex flex-col gap-4 p-4 md:h-screen md:flex-row">
@@ -87,6 +82,7 @@ export const BattleView = ({
           isPlayersTurn={state.isPlayersTurn}
           damage={damage}
           attack={attack}
+          opponentType={opponent.type}
         />
       </div>
       <div className="flex flex-1 flex-col gap-4">
@@ -97,6 +93,7 @@ export const BattleView = ({
           damage={damage}
           attack={attack}
           isCpu={true}
+          opponentType={pokemon.type}
         />
       </div>
       <Modal

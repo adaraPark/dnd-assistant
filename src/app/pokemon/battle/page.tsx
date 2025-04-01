@@ -6,7 +6,6 @@ import { api } from "app/trpc/react";
 import { useSearchParams } from "next/navigation";
 
 export default function BattlePage() {
-  //hoook todo move to a hook
   const searchParams = useSearchParams();
   const pokemonId = searchParams.get("pokemonId");
   const opponentId = searchParams.get("opponentId");

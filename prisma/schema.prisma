@@ -15,7 +15,6 @@ model Pokemon {
     type           String
     level          Int             @default(1)
     baseHp         Int
-    battleHp       Int
     attack         Int
     defense        Int
     specialAttack  Int

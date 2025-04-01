@@ -98,7 +98,7 @@ const getRandomMultiplier = () => {
  * Get the type effectiveness multiplier for a move
  * @returns The type effectiveness multiplier
  */
-const getTypeEffectivenessMultiplier = (
+export const getTypeEffectivenessMultiplier = (
   moveType: moveType["type"],
   defenderType: pokemonType["type"],
 ) => {

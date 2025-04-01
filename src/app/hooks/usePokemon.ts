@@ -2,7 +2,7 @@ import { api } from "app/trpc/react";
 
 export const useUpdatePokemon = () => {
   const utils = api.useUtils();
-  const { mutate } = api.pokemon.update.useMutation({
+  const { mutateAsync } = api.pokemon.update.useMutation({
     onSuccess: () => {
       void utils.pokemon.byId.invalidate();
       void utils.pokemon.getAll.invalidate();
@@ -13,5 +13,5 @@ export const useUpdatePokemon = () => {
       console.error("Failed to update pokemon");
     },
   });
-  return { mutate };
+  return { mutateAsync };
 };

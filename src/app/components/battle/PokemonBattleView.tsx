@@ -14,6 +14,7 @@ export const PokemonBattleView = ({
   damage,
   attack,
   isCpu = false,
+  opponentType,
 }: {
   pokemon: pokemon;
   battleHp: number;
@@ -21,6 +22,7 @@ export const PokemonBattleView = ({
   damage: number;
   attack: (move: Move) => void;
   isCpu?: boolean;
+  opponentType: pokemon["type"];
 }) => {
   return (
     <div className="flex flex-1 flex-col gap-4">
@@ -51,6 +53,7 @@ export const PokemonBattleView = ({
         attack={attack}
         isPlayersTurn={isPlayersTurn}
         isCpu={isCpu}
+        opponentType={opponentType}
       />
     </div>
   );

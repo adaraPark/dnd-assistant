@@ -16,6 +16,8 @@ export const SpeciesValues = [
   "SNORLAX",
   "TYRANITAR",
   "MACHAMP",
+  "PIPLUP",
+  "JIGGLYPUFF",
 ] as const;
 /**
  * Use this if you need to zod parse it
@@ -42,4 +44,6 @@ export const SpeciesDisplayNames: Readonly<Record<Species, string>> = {
   SNORLAX: "Snorlax",
   TYRANITAR: "Tyranitar",
   MACHAMP: "Machamp",
+  PIPLUP: "Piplup",
+  JIGGLYPUFF: "Jigglypuff",
 };

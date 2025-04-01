@@ -27,9 +27,9 @@ export const PokemonCard = ({ pokemon }: { pokemon: pokemon }) => {
           label="Type"
           value={ElementTypeDisplayNames[pokemon.type]}
         />
+        <PokemonLineItem label="Level" value={pokemon.level} />
         <PokemonLineItem label="Health" value={pokemon.baseHp} />
         <PokemonLineItem label="Speed" value={pokemon.speed} />
-        <PokemonLineItem label="Level" value={pokemon.level} />
         <PokemonLineItem label="Physical Att." value={pokemon.attack} />
         <PokemonLineItem label="Physical Def." value={pokemon.defense} />
         <PokemonLineItem label="Special Att." value={pokemon.specialAttack} />
